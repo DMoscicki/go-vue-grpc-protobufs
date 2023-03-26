@@ -1,0 +1,52 @@
+syntax = "proto3";
+package protofiles;
+option go_package = "/protogen";
+//import "google/api/annotations.proto";
+
+
+message GetTodos{}
+
+message GetRepos{}
+
+message AddTodos{
+  string task = 1;
+}
+
+message DeleteTodos{
+  string id = 1;
+  reserved 2 to max;
+}
+
+message TodoObject{
+  string id = 1;
+  string task = 2;
+}
+
+message todoResponse{
+  repeated TodoObject todos = 1;
+}
+
+message deleteResponse{
+  string message = 1;
+}
+
+message Language {
+  string name = 1;
+}
+
+message LanguageLib {
+  string name = 1;
+  int64 stars = 2;
+}
+
+message LanguageResponse {
+  repeated LanguageLib libraries = 1;
+}
+
+service todoService{
+  rpc addTodo(AddTodos) returns (TodoObject) {}
+  rpc deleteTodo(DeleteTodos) returns (deleteResponse) {}
+  rpc getTodos(GetTodos) returns (todoResponse) {}
+  rpc libResponse(Language) returns (LanguageResponse) {}
+  rpc getRepos(GetRepos) returns (LanguageResponse) {}
+}
