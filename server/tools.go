@@ -1,7 +1,7 @@
-// go:build tools
+//go:build tools
 // +build tools
 
-package tools
+package main
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway"
@@ -10,5 +10,3 @@ import (
 	_ "google.golang.org/grpc/cmd/protoc-gen-go-grpc"
 	_ "google.golang.org/protobuf/cmd/protoc-gen-go"
 )
-
-///protoc --proto_path=proto --js_out=import_style=commonjs,binary:client/src/ --grpc-web_out=import_style=commonjs,mode=grpcwebtext:client/src/ proto/test.proto

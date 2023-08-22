@@ -3,14 +3,16 @@ version: '3.9'
 services:
   backend:
     build:
-      context: .
+      context: server
     container_name: backend
     hostname: localhost
     ports:
       - 8080:8080
   frontend:
-    build: ./frontend
-    container_name: frontend
+    build: app
+    container_name: app
     hostname: localhost
+    depends_on:
+      - backend
     ports:
       - 8081:8080

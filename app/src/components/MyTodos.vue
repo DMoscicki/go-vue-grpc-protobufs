@@ -45,11 +45,14 @@ import IconRemove from "@/components/IconRemove.vue";
 export default {
   name: 'MyTodoView',
   components: {IconRemove},
+  mounted() {
+    document.title = 'Todo'
+  },
   data: function () {
     return {inputField: "", todos: [], dialog:false};
   },
   created: function () {
-    this.client = new todoServiceClient("http://localhost:8080", null, null)
+    this.client = new todoServiceClient("https://localhost:8080/", null, null)
     this.getTodos();
   },
   methods: {

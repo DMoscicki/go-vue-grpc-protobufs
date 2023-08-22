@@ -1,4 +1,4 @@
-FROM golang:1.20.2-alpine as build
+FROM golang:1.21-alpine as build
 
 WORKDIR /app
 
@@ -6,7 +6,7 @@ COPY go.mod go.sum ./
 
 RUN go mod tidy
 
-COPY .. .
+COPY ./. .
 
 RUN go build -o /backend
 
@@ -19,3 +19,5 @@ COPY --from=build ./backend /app/backend
 EXPOSE 8080/tcp
 
 CMD [ "/app/backend" ]
+
+COPY certs /app/certs

@@ -31,6 +31,9 @@ import ActualDropdown from "@/components/ActualDropdown.vue";
 export default {
   name: 'HelloWorld',
   components: {ActualDropdown},
+  mounted() {
+    document.title = 'Home'
+  }
 }
 </script>
 

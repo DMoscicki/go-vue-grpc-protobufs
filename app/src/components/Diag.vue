@@ -21,6 +21,16 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <v-dialog v-model="empter" width="auto">
+            <v-card>
+              <v-card-text>
+                Неправильно введены данные.
+              </v-card-text>
+              <v-card-actions>
+                <v-btn color="primary" block @click="empter = false">Close dialog</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </div>
       </div>
     </section>
@@ -41,6 +51,7 @@ import {todoServiceClient} from '@/protos/answer_grpc_web_pb'
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import {object} from "google-protobuf";
+import {tr} from "vuetify/locale";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
@@ -48,13 +59,16 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 export default {
   name: 'Diag',
   components: { Bar },
+  mounted() {
+    document.title = 'Most popular GIT repos'
+  },
   data () {
     return {
       chartData: {
         labels: [ 'January', 'February', 'March'],
         datasets: [
           {
-            label: 'Data One',
+            label: 'DEMO',
             backgroundColor: '#f87979',
             data: [40, 20, 12]
           }
@@ -62,12 +76,13 @@ export default {
       },
       isLoading: false,
       dialog: false,
+      empter: false,
       inputField: "",
     }
   },
   created () {
-    this.client = new todoServiceClient("http://localhost:8080", null, null)
-    this.getRepos()
+    this.client = new todoServiceClient("https://localhost:8080/", null, null)
+    // this.getRepos()
   },
   methods: {
     randomInteger: function (max) {
@@ -87,6 +102,12 @@ export default {
         let starr = response.toObject().librariesList.map(x => {
           return x.stars
         })
+
+        if (starr.length === 0) {
+          this.empter = true
+          this.isLoading = false
+          return
+        }
         let labeler = response.toObject().librariesList.map(c => {
           return c.name
         })
@@ -113,6 +134,7 @@ export default {
       let request = new Language();
       if (this.inputField === "") {
         this.dialog = true
+        this.isLoading = false
       } else {
         request.setName(this.inputField)
         this.client.libResponse(request, {}, () => {
